@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
+#include <string.h>
 
-struct MemoryEvent{ // 8 bytes
+struct MemoryEvent{ // 16 bytes
     int type; // -1=free, 0=realloc(), 1=malloc()     4 bytes
-    uint32_t line; // line number of the event           4 bytes 
+    uint32_t line; // line number of the event        4 bytes 
+    char* file;    // pointer to the file string      8 bytes
 };
 
 struct MemoryAllocation{ // 24 bytes

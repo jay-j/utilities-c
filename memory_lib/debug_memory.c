@@ -43,7 +43,9 @@ void* debug_mem_malloc(size_t size, const char* file, uint32_t line){
     debug_memory_array[id].event_count = 1;
     debug_memory_array[id].events[0].type = 1;
     debug_memory_array[id].events[0].line = line; 
-    
+    debug_memory_array[id].events[0].file = (char*) malloc(64 * sizeof (char));
+    strcpy(debug_memory_array[id].events[0].file, __FILE__);
+
     return ptr;
 }
 
@@ -57,8 +59,11 @@ void* debug_mem_realloc(void* ptr, size_t new_size, const char* file, uint32_t l
     // register the realloc attempt
     debug_memory_array[id].event_count++;
     debug_memory_array[id].events = (struct MemoryEvent*) realloc(debug_memory_array[id].events,  debug_memory_array[id].event_count * sizeof (struct MemoryEvent));
-    debug_memory_array[id].events[debug_memory_array[id].event_count-1].type = 0;
-    debug_memory_array[id].events[debug_memory_array[id].event_count-1].line = line;
+    size_t event_id = debug_memory_array[id].event_count-1;
+    debug_memory_array[id].events[event_id].type = 0;
+    debug_memory_array[id].events[event_id].line = line;
+    debug_memory_array[id].events[event_id].file = (char*) malloc(64 * sizeof (char));
+    strcpy(debug_memory_array[id].events[event_id].file, __FILE__);
 
     // actually realloc
     ptr = realloc(ptr, new_size);
@@ -83,8 +88,11 @@ void debug_mem_free(void* ptr, const char* file, uint32_t line){
     // register the free attempt
     debug_memory_array[id].event_count++;
     debug_memory_array[id].events = (struct MemoryEvent*) realloc(debug_memory_array[id].events,  debug_memory_array[id].event_count * sizeof (struct MemoryEvent));
-    debug_memory_array[id].events[debug_memory_array[id].event_count-1].type = -1;
-    debug_memory_array[id].events[debug_memory_array[id].event_count-1].line = line;
+    size_t event_id = debug_memory_array[id].event_count-1;
+    debug_memory_array[id].events[event_id].type = -1;
+    debug_memory_array[id].events[event_id].line = line;
+    debug_memory_array[id].events[event_id].file = (char*) malloc(64 * sizeof (char));
+    strcpy(debug_memory_array[id].events[event_id].file, __FILE__);
 
     // actually free
     free(ptr);
@@ -110,7 +118,7 @@ void debug_mem_print_events(){
         printf("%p  size: %ld\n", debug_memory_array[id].ptr, debug_memory_array[id].size);
 
         for (size_t j=0; j < debug_memory_array[id].event_count; j++){
-            printf("  event: %d  line: %d\n", debug_memory_array[id].events[j].type, debug_memory_array[id].events[j].line);
+            printf("  event: %+d  in %s : %d\n", debug_memory_array[id].events[j].type, debug_memory_array[id].events[j].file, debug_memory_array[id].events[j].line);
         }
     }
 }
