@@ -1,8 +1,7 @@
 #include "debug_memory.h"
 
+// inspired by this. But 100% my own code
 // https://youtu.be/443UNeGrFoM?t=3009
-// TODO some kind of tracking system to connect mallocs with frees
-// build a list of the allocated memory
 
 struct MemoryAllocation* debug_memory_array;
 size_t debug_memory_array_length;
@@ -100,12 +99,12 @@ void debug_mem_free(void* ptr, const char* file, uint32_t line){
     debug_memory_array[id].events[event_id].file = (char*) malloc(64 * sizeof (char));
     strcpy(debug_memory_array[id].events[event_id].file, __FILE__);
 
-
     // actually free
     free(ptr);
 }
 
-// 
+
+// search the ledger of variables for one with the given pointer
 size_t debug_mem_find_variable(void* ptr){
     size_t id;
     for (id = 0; id < debug_memory_array_count; id++){

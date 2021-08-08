@@ -18,15 +18,17 @@ struct MemoryAllocation{ // 24 bytes
     size_t event_count;         // 8 bytes
 };
 
-
-// setup a data structure to record allocations of memory
+// setup a data structure to record allocations of memory, free it up at the end
 void debug_mem_init();
 void debug_mem_cleanup();
 
+// replacements for the standard functions that add tracking functionality
 void* debug_mem_malloc(size_t size, const char* file, uint32_t line);
 void* debug_mem_realloc(void* ptr, size_t new_size, const char* file, uint32_t line);
 void  debug_mem_free(void* ptr, const char* file, uint32_t line);
 
-size_t debug_mem_find_variable(void* ptr);
-
+// functions to explore the ledger and assist with debugging
 void debug_mem_print_events();
+
+// internal utiltiy functions
+size_t debug_mem_find_variable(void* ptr);
