@@ -3,9 +3,11 @@
 #include <inttypes.h>
 #include <string.h>
 
-struct MemoryEvent{ // 16 bytes
+struct MemoryEvent{ // 32 bytes
     int type; // -1=free, 0=realloc(), 1=malloc()     4 bytes
     uint32_t line; // line number of the event        4 bytes 
+    size_t size_prev; //                              8 bytes
+    size_t size_new;  //                              8 bytes
     char* file;    // pointer to the file string      8 bytes
 };
 
@@ -19,6 +21,7 @@ struct MemoryAllocation{ // 24 bytes
 
 // setup a data structure to record allocations of memory
 void debug_mem_init();
+void debug_mem_cleanup();
 
 void* debug_mem_malloc(size_t size, const char* file, uint32_t line);
 void* debug_mem_realloc(void* ptr, size_t new_size, const char* file, uint32_t line);

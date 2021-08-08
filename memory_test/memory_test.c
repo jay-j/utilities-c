@@ -23,12 +23,15 @@ int main(int argc, const char** argv){
 	double* array2;
 	array2 = (double*) malloc(3 * (sizeof  *array2));
 	array2 = realloc(array2, 12 * (sizeof  *array2));
+	array2 = realloc(array2, 24 * (sizeof  *array2));
+
 
 	
 	free(array2);	
 	free(array1);
 
 	debug_mem_print_events();
+	debug_mem_cleanup();
 
 	printf("test complete\n");
 
