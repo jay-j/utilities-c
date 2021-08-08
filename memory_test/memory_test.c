@@ -12,15 +12,11 @@
 int main(int argc, const char** argv){
 	debug_mem_init();
 
-	printf("size of unsigned int: %ld bytes\n",sizeof (unsigned int));
-	printf("size of char: %ld bytes\n",sizeof (char));
-
 	int* array1;
 	array1 = (int*) malloc(3 * (sizeof *array1));
 	array1[0] = 2;
 	array1[1] = 3;
 	array1[2] = 7;
-	printf("array1 is at %p\n", (void*) array1);
 
 	array1 =  realloc(array1, 12 * (sizeof *array1));
 
@@ -31,6 +27,8 @@ int main(int argc, const char** argv){
 	
 	free(array2);	
 	free(array1);
+
+	debug_mem_print_events();
 
 	printf("test complete\n");
 

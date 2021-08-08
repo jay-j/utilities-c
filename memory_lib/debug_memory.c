@@ -18,7 +18,7 @@ void debug_mem_init(){
 
 
 void* debug_mem_malloc(size_t size, const char* file, uint32_t line){
-    printf("allocating %ld bytes in %s : %d ... ", size, file, line);
+    printf("allocating %ld bytes in %s : %d ... \n", size, file, line);
 
     debug_memory_array_count++;
 
@@ -34,9 +34,6 @@ void* debug_mem_malloc(size_t size, const char* file, uint32_t line){
     if (ptr == NULL){
         printf("[ERROR] MEMORY ALLOCATION FAILED!\n");
     }
-    else{
-       printf("  ptr=%p\n", ptr);
-    }
 
     // log the allocation
     size_t id = debug_memory_array_count-1;
@@ -47,8 +44,6 @@ void* debug_mem_malloc(size_t size, const char* file, uint32_t line){
     debug_memory_array[id].events[0].type = 1;
     debug_memory_array[id].events[0].line = line; 
     
-    printf("done\n");
-
     return ptr;
 }
 
@@ -65,24 +60,22 @@ void* debug_mem_realloc(void* ptr, size_t new_size, const char* file, uint32_t l
     debug_memory_array[id].events[debug_memory_array[id].event_count-1].type = 0;
     debug_memory_array[id].events[debug_memory_array[id].event_count-1].line = line;
 
-    printf("  dealing with %p\n", ptr);
-
     // actually realloc
     ptr = realloc(ptr, new_size);
-    printf("  main realloc1 successful\n");
+    if (ptr == NULL){
+        printf("[ERROR] REALLOC FAILED\n");
+    }
 
     // update the pointer
     debug_memory_array[id].ptr = ptr;
     debug_memory_array[id].size = new_size;
-
-    printf("done\n");
 
     return ptr;
 }
 
 
 void debug_mem_free(void* ptr, const char* file, uint32_t line){
-    printf("freeing in %s : %d ... ", file, line);
+    printf("freeing in %s : %d ... \n", file, line);
 
     // find the variable in the leger 
     size_t id = debug_mem_find_variable(ptr);
@@ -95,7 +88,6 @@ void debug_mem_free(void* ptr, const char* file, uint32_t line){
 
     // actually free
     free(ptr);
-    printf("done\n");
 }
 
 // 
