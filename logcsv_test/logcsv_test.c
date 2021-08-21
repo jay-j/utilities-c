@@ -15,11 +15,15 @@ int main(){
     // write the headers to disk
     log_csv_write_headers(log);
 
+    size_t id_time = log_csv_column_getid(log, "time");
+    size_t id_pos = log_csv_column_getid(log, "position");
+    size_t id_vel = log_csv_column_getid(log, "velocity");
+
     // fake some data
     for (size_t i=0; i<128; i++){
-        log->data[0].value = (double) i;
-        log->data[1].value = (double) 2*i+3;
-        log->data[2].value = 3333 - (double) i;
+        log->data[id_time].value = (double) i;
+        log->data[id_pos].value = (double) 2*i+3;
+        log->data[id_vel].value = 3333 - (double) i;
 
         // each loop write new data to disk
         log_csv_write(log);

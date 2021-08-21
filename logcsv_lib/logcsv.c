@@ -76,3 +76,14 @@ void log_csv_close(LogCSV* clog){
     free(clog->data);
     free(clog);
 }
+
+
+size_t log_csv_column_getid(LogCSV* clog, const char* str){
+    size_t id = -1;
+    for (size_t i=0; i<clog->columns; i++){
+        if (strcmp(str, clog->data[i].name) == 0){
+            id = i;
+        }
+    }
+    return id;
+}
