@@ -22,3 +22,4 @@ void log_csv_write_headers(LogCSV* clog);
 void log_csv_write(LogCSV* clog);
 void log_csv_close(LogCSV* clog);
 size_t log_csv_column_getid(LogCSV* clog, const char* str);
+void log_csv_column_set(LogCSV* clog, const char* str, double value);
