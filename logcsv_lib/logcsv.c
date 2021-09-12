@@ -87,3 +87,10 @@ size_t log_csv_column_getid(LogCSV* clog, const char* str){
     }
     return id;
 }
+
+void log_csv_column_set(LogCSV* clog, const char* str, double value){
+    size_t id = log_csv_column_getid(clog, str);
+    if (id != -1){
+        clog->data[id].value = value;
+    }
+}
