@@ -20,10 +20,10 @@ int main(int argc, const char** argv){
     printf("t,current_position,current_velocity,accelerate,stop_position\n");
 
     while (t < 40){
-        printf("%lf,", t);
         profile_trap_smooth(&trap, goal, dt);
-
-        if (approx(t,5)){
+        printf("%lf,%lf,%lf,%lf,0\n", t, trap.current_position, trap.current_velocity, trap.current_acceleration);
+     
+        if (approx(t, 5)){
             goal = 5;
         }
 

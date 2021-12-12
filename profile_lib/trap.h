@@ -6,6 +6,7 @@ typedef struct {
     double profile_speed;
     double current_velocity;
     double current_position;
+    double current_acceleration;
 } TrapInfo;
 
 
