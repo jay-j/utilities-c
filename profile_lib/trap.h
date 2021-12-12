@@ -1,6 +1,5 @@
 #ifndef LIB_TRAP_H
 #define LIB_TRAP_H
-#include <stdio.h>
 
 typedef struct {
     double profile_acceleration;
