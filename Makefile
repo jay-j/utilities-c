@@ -4,7 +4,10 @@ LIB=-Imemory_lib/ -Ilogcsv_lib/ -Ihash_lib/ -Iprofile_lib/
 all: lib tests
 
 ### Prototype / Dev Items ###
-tests: test_memory test_csv test_hash test_trap test_smoothdelay
+tests: test_memory test_csv test_hash test_trap test_smoothdelay profile_comparison
+
+profile: lib profile_comparison
+	./profile_test/profile_comparison.bin > data.csv
 
 test_memory: lib memory_test/memory_test.c 
 	gcc $(COMMON) $(LIB) memory_test/memory_test.c memory_lib/debug_memory.o -o memory_test/memory_test.bin
@@ -20,6 +23,9 @@ test_trap: lib profile_test/trap_test.c
 
 test_smoothdelay: lib profile_test/smoothdelay_test.c
 	gcc $(COMMON) $(LIB) profile_test/smoothdelay_test.c profile_lib/smooth_delay.o -o profile_test/smoothdelay_test.bin
+
+profile_comparison: lib profile_test/profile_comparison.c
+	gcc $(COMMON) $(LIB) profile_test/profile_comparison.c profile_lib/trap.o profile_lib/smooth_delay.o -o profile_test/profile_comparison.bin
 
 ### Libraries ###
 lib:  memory_lib/debug_memory.o logcsv_lib/logcsv.o hash_lib/hashtable.o profile_lib/trap.o profile_lib/smooth_delay.o
