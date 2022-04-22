@@ -128,12 +128,16 @@ void hash_table_remove(HashTable* ht, char* key){
 }
 
 
-void hash_table_destroy(HashTable* ht){
+void hash_table_destroy(HashTable* ht, uint64_t flags){
     // remove any objects remaining in the table
     for( size_t i=0; i<ht->size; i++){
         if (ht->data[i].value != NULL){
-            free(ht->data[i].value);
-            free(ht->data[i].key);
+            if ((flags & HT_DATA) > 0){
+              free(ht->data[i].value);
+            }
+            if ((flags & HT_KEY) > 0){
+              free(ht->data[i].key);
+            }
         }
     }
 
