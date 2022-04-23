@@ -34,11 +34,12 @@ size_t hash_string(char* str, size_t length){
 
 
 // create data structures and allocate memory for them
-HashTable* hash_table_create(size_t size){
+HashTable* hash_table_create(size_t size, uint64_t flags){
     HashTable* ht;
     ht = (HashTable*) malloc( sizeof(HashTable) );
     ht->size = size;
     ht->count = 0;
+    ht->flags = flags;
 
     HashTableItem* data = (HashTableItem*) malloc( size * sizeof(HashTableItem) );
     ht->data = data;
@@ -121,21 +122,26 @@ void* hash_table_get(HashTable* ht, char* key){
 void hash_table_remove(HashTable* ht, char* key){
     size_t length = hash_string_find_length(key);
     size_t index = hash_string(key, length) % ht->size;
-    free( ht->data[index].value);
-    free( ht->data[index].key);
+    if ((ht->flags & HT_FREE_DATA) > 0){
+        free(ht->data[index].value);
+    }
+    if ((ht->flags & HT_FREE_KEY) > 0){
+        free(ht->data[index].key);
+    }
+ 
     ht->data[index].value = NULL;
     ht->count--;
 }
 
 
-void hash_table_destroy(HashTable* ht, uint64_t flags){
+void hash_table_destroy(HashTable* ht){
     // remove any objects remaining in the table
     for( size_t i=0; i<ht->size; i++){
         if (ht->data[i].value != NULL){
-            if ((flags & HT_DATA) > 0){
+            if ((ht->flags & HT_FREE_DATA) > 0){
               free(ht->data[i].value);
             }
-            if ((flags & HT_KEY) > 0){
+            if ((ht->flags & HT_FREE_KEY) > 0){
               free(ht->data[i].key);
             }
         }
