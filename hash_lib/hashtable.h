@@ -19,7 +19,7 @@ typedef struct {
     HashTableItem* data;
 } HashTable;
 
-size_t hash(void* key, int length);
+size_t hash(void* key, size_t length);
 size_t hash_string_find_length(char* str);
 size_t hash_string(char* str, size_t length);
 HashTable* hash_table_create(size_t size, uint64_t flags);

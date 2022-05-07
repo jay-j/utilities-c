@@ -1,7 +1,7 @@
 #include "hashtable.h"
 
 // compute hash based on the raw bytes
-size_t hash(void* key, int length){
+size_t hash(void* key, size_t length){
     uint8_t* key_bytes = (uint8_t*) key;
     size_t result = 5381;
     int c = *key_bytes;

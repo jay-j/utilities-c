@@ -2,7 +2,7 @@
 
 int main(){
 
-    HashTable* ht = hash_table_create(128);
+    HashTable* ht = hash_table_create(128, HT_FREE_DATA | HT_FREE_KEY);
 
     // create and add some dummy data into
     printf("Add data1 as abc\n");
