@@ -1,3 +1,6 @@
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -29,3 +32,5 @@ void* hash_table_get(HashTable* ht, char* key);
 void hash_table_remove(HashTable* ht, char* key);
 void hash_table_destroy(HashTable* ht);
 void hash_table_print(HashTable* ht);
+
+#endif
