@@ -114,7 +114,16 @@ int hash_table_insert_collision(HashTable* ht, char* str, void* data, size_t ind
 void* hash_table_get(HashTable* ht, char* key){
     size_t length = hash_string_find_length(key);
     size_t index = hash_string(key, length) % ht->size;
-    void* result = ht->data[index].value;
+    void* result = NULL;
+  
+    // keep looking through the table until the keys match or the table is empty 
+    while (ht->data[index].value != NULL){
+      if (strcmp(key, ht->data[index].key) == 0){
+        result = ht->data[index].value;
+        break;
+      }
+      index = (index + 1) % ht->size;
+    }
     return result;
 }
 
