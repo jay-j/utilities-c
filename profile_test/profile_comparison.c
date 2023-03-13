@@ -1,5 +1,6 @@
 #include "trap.h"
 #include "smooth_delay.h"
+#include "profile_ema.h"
 #include <stdio.h>
 
 int approx(double value, double reference){
@@ -10,28 +11,32 @@ int approx(double value, double reference){
 }
 
 int main(int argc, const char** argv){
-    // setup
-    TrapInfo trap = profile_trap_setup(3.0, 1.0);
-    SmoothDelayInfo smoothdelay = profile_smoothdelay_setup(40);
-
-    double sd_position = 0;
     double goal = 25;
     double dt = 0.1; 
     double t = 0;
 
-    printf("t,goal,trap,delay\n");
+    // setup
+    TrapInfo trap = profile_trap_setup(3.3, 1.0);
+    SmoothDelayInfo smoothdelay = profile_smoothdelay_setup(40);
+    EMAInfo ema = profile_ema_setup(dt, 3.5);
+
+    printf("t,goal,trap,delay,ema\n");
+    
+    double sd_position = 0;
+    double ema_position = 0;
 
     while (t < 40){
         profile_trap_smooth(&trap, goal, dt);
         sd_position = profile_smoothdelay_smooth(&smoothdelay, goal);
+        ema_position = profile_ema_update(&ema, goal);
 
-        printf("%lf,%lf,%lf,%lf\n", t, goal, trap.current_position, sd_position);
+        printf("%lf,%lf,%lf,%lf,%lf\n", t, goal, trap.current_position, sd_position, ema_position);
      
-        if (approx(t, 5)){
+        if (approx(t, 7)){
             goal = 5;
         }
 
-        if (approx(t, 12.5)){
+        if (approx(t, 10)){
             goal = 0;
         }
 

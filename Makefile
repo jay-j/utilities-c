@@ -25,10 +25,10 @@ test_smoothdelay: lib profile_test/smoothdelay_test.c
 	gcc $(COMMON) $(LIB) profile_test/smoothdelay_test.c profile_lib/smooth_delay.o -o profile_test/smoothdelay_test.bin
 
 profile_comparison: lib profile_test/profile_comparison.c
-	gcc $(COMMON) $(LIB) profile_test/profile_comparison.c profile_lib/trap.o profile_lib/smooth_delay.o -o profile_test/profile_comparison.bin
+	gcc $(COMMON) $(LIB) profile_test/profile_comparison.c profile_lib/trap.o profile_lib/smooth_delay.o profile_lib/profile_ema.o -o profile_test/profile_comparison.bin -lm
 
 ### Libraries ###
-lib:  memory_lib/debug_memory.o logcsv_lib/logcsv.o hash_lib/hashtable.o profile_lib/trap.o profile_lib/smooth_delay.o
+lib:  memory_lib/debug_memory.o logcsv_lib/logcsv.o hash_lib/hashtable.o profile_lib/trap.o profile_lib/smooth_delay.o profile_lib/profile_ema.o
 
 memory_lib/debug_memory.o: memory_lib/debug_memory.c memory_lib/debug_memory.h
 	gcc $(COMMON) -c memory_lib/debug_memory.c -o memory_lib/debug_memory.o 
@@ -39,6 +39,9 @@ logcsv_lib/logcsv.o: logcsv_lib/logcsv.c logcsv_lib/logcsv.h
 hash_lib/hashtable.o: hash_lib/hashtable.c hash_lib/hashtable.h
 	gcc $(COMMON) -c hash_lib/hashtable.c -o hash_lib/hashtable.o
 
+
+profile_lib/profile_ema.o: profile_lib/profile_ema.c profile_lib/profile_ema.h
+	gcc $(COMMON) -c profile_lib/profile_ema.c -o profile_lib/profile_ema.o
 
 profile_lib/trap.o: profile_lib/trap.c profile_lib/trap.h
 	gcc $(COMMON) -c profile_lib/trap.c -o profile_lib/trap.o
